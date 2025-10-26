@@ -29,6 +29,7 @@ const parseModelResponse = (
   return { reasoning, answer };
 };
 
+// Replaces LaTeX math delimiters (\[, \], \(, \)) with inline $...$ Markdown syntax for the remark-math and rehype-katex plugins
 export const preprocessLaTeX = (content: string) => {
   const blockProcessedContent = content.replace(
     /\\\[(.*?)\\]/gs,
