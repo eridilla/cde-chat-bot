@@ -116,7 +116,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  table {
+    @apply border border-stone-400 border-collapse w-full;
+  }
+
+  th,
+  td {
+    @apply border border-stone-400 p-2;
   }
 }

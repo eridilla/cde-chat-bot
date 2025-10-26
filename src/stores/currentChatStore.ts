@@ -1,16 +1,5 @@
 import { createStore } from "zustand";
-
-export type CurrentChatMessage = {
-  question: string;
-  questionTimestamp: Date;
-  response?: string;
-  responseTimestamp?: Date;
-};
-
-export type LatestChatMessageResponse = {
-  response: string;
-  responseTimestamp: Date;
-};
+import { CurrentChatMessage, TransformedMessage } from "@/lib/types";
 
 export type CurrentChatState = {
   currentChat: CurrentChatMessage[];
@@ -18,7 +7,7 @@ export type CurrentChatState = {
 
 export type CurrentChatAction = {
   updateCurrentChat: (newMessage: CurrentChatMessage) => void;
-  updateLatestChatMessage: (chatResponse: LatestChatMessageResponse) => void;
+  updateLatestChatMessage: (chatResponse: TransformedMessage) => void;
 };
 
 export type CurrentChatStore = CurrentChatState & CurrentChatAction;
@@ -41,7 +30,8 @@ export const createCurrentChatStore = (
         currentChat: [
           {
             ...state.currentChat[0],
-            response: chatResponse.response,
+            answer: chatResponse.answer,
+            reasoning: chatResponse.reasoning,
             responseTimestamp: chatResponse.responseTimestamp,
           },
           ...state.currentChat.slice(1),

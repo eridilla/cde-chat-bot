@@ -1,15 +1,15 @@
 import { createStore } from "zustand";
-import { Message } from "@/lib/types";
+import { TransformedMessage } from "@/lib/types";
 
 export type MessageHistoryState = {
-  messageHistory: Message[];
+  messageHistory: TransformedMessage[];
 };
 
 export type MessageHistoryAction = {
   setMessageHistory: (
     messageHistory: MessageHistoryState["messageHistory"],
   ) => void;
-  updateMessageHistory: (newMessage: Message) => void;
+  updateMessageHistory: (newMessage: TransformedMessage) => void;
 };
 
 export type MessageHistoryStore = MessageHistoryState & MessageHistoryAction;
