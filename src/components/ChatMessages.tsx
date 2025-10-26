@@ -6,6 +6,8 @@ import ChatBubble from "@/components/ChatBubble";
 import { CompleteMessage, CurrentChatMessage } from "@/lib/types";
 import { AnimatePresence, motion } from "motion/react";
 import { ScrollDownWrapper } from "@/components/ScrollDownWrapper";
+import { ArrowDownIcon } from "@phosphor-icons/react/dist/ssr";
+import { animationSettings } from "@/lib/utils";
 
 export const ChatMessages = () => {
   const { currentChat } = useCurrentChatStore((state) => state);
@@ -17,35 +19,43 @@ export const ChatMessages = () => {
   return (
     <AnimatePresence initial={true}>
       <ScrollDownWrapper>
-        {currentChat.map((message) => {
-          return (
-            <motion.div
-              key={message.questionTimestamp.toISOString()}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="flex flex-col-reverse gap-4"
-            >
-              {isCompleteMessage(message) ? (
+        {currentChat.length > 0 ? (
+          currentChat.map((message) => {
+            return (
+              <motion.div
+                key={message.questionTimestamp.toISOString()}
+                layout
+                {...animationSettings}
+                className="flex flex-col-reverse gap-4"
+              >
+                {isCompleteMessage(message) ? (
+                  <ChatBubble
+                    type="received"
+                    text={message.answer}
+                    reasoning={message.reasoning}
+                    timestamp={message.responseTimestamp}
+                  />
+                ) : (
+                  <ChatBubble type="received" loading />
+                )}
                 <ChatBubble
-                  type="received"
-                  text={message.answer}
-                  reasoning={message.reasoning}
-                  timestamp={message.responseTimestamp}
+                  type="sent"
+                  text={message.question}
+                  timestamp={message.questionTimestamp}
                 />
-              ) : (
-                <ChatBubble type="received" loading />
-              )}
-              <ChatBubble
-                type="sent"
-                text={message.question}
-                timestamp={message.questionTimestamp}
-              />
-            </motion.div>
-          );
-        })}
+              </motion.div>
+            );
+          })
+        ) : (
+          <motion.div
+            {...animationSettings}
+            className="flex flex-col gap-4 w-full h-full items-center justify-center text-center"
+          >
+            <h1>How may I help you today?</h1>
+            <p className="text-stone-400">Start by typing a message below</p>
+            <ArrowDownIcon size={24} className="text-stone-400" />
+          </motion.div>
+        )}
       </ScrollDownWrapper>
     </AnimatePresence>
   );

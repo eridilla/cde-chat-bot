@@ -8,6 +8,7 @@ export type CurrentChatState = {
 export type CurrentChatAction = {
   updateCurrentChat: (newMessage: CurrentChatMessage) => void;
   updateLatestChatMessage: (chatResponse: TransformedMessage) => void;
+  removeLatestChatMessage: () => void;
 };
 
 export type CurrentChatStore = CurrentChatState & CurrentChatAction;
@@ -37,5 +38,7 @@ export const createCurrentChatStore = (
           ...state.currentChat.slice(1),
         ],
       })),
+    removeLatestChatMessage: () =>
+      set((state) => ({ currentChat: state.currentChat.slice(1) })),
   }));
 };

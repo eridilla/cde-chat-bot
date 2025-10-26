@@ -4,16 +4,19 @@ import React from "react";
 import { useMessageHistoryStore } from "@/providers/messageHistoryStoreProvider";
 import ChatBubble from "@/components/ChatBubble";
 import { ScrollDownWrapper } from "@/components/ScrollDownWrapper";
+import { AnimatePresence, motion } from "motion/react";
+import { animationSettings } from "@/lib/utils";
 
 export const HistoryMessages = () => {
   const { messageHistory } = useMessageHistoryStore((state) => state);
 
   return (
-    <>
+    <AnimatePresence initial={true}>
       <ScrollDownWrapper>
         {messageHistory.map((message) => (
-          <div
+          <motion.div
             key={message.responseTimestamp.toISOString()}
+            {...animationSettings}
             className="flex flex-col gap-4"
           >
             <div className="w-full text-center text-sm text-stone-600">
@@ -25,9 +28,9 @@ export const HistoryMessages = () => {
               text={message.answer}
               reasoning={message.reasoning}
             />
-          </div>
+          </motion.div>
         ))}
       </ScrollDownWrapper>
-    </>
+    </AnimatePresence>
   );
 };

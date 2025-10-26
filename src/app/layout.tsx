@@ -4,6 +4,7 @@ import "./globals.css";
 import { MessageHistoryStoreProvider } from "@/providers/messageHistoryStoreProvider";
 import { fetchMessageHistory } from "@/actions/fetchMessageHistory";
 import { CurrentChatStoreProvider } from "@/providers/currentChatStoreProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const messageHistory = await fetchMessageHistory();
+  const { history, error } = await fetchMessageHistory();
 
   return (
     <html lang="en">
@@ -32,8 +33,12 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         <CurrentChatStoreProvider>
-          <MessageHistoryStoreProvider initialData={{ messageHistory }}>
+          <MessageHistoryStoreProvider
+            initialData={{ messageHistory: history }}
+            error={error}
+          >
             {children}
+            <Toaster />
           </MessageHistoryStoreProvider>
         </CurrentChatStoreProvider>
       </body>

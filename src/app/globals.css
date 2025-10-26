@@ -121,6 +121,10 @@
     @apply bg-background text-foreground;
   }
 
+  h1 {
+    @apply text-2xl font-bold;
+  }
+
   table {
     @apply border border-stone-400 border-collapse w-full;
   }
